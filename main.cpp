@@ -1,33 +1,3 @@
-// #include <iostream>
-// #include <fstream>
-// #include <vector>
-
-// using namespace std;
-
-// int main() {
-//     std::ifstream inputFile("testfile.mid", std::ios::binary | std::ios::in);
-//     const size_t chunkSize = 1024; // Read 1KB chunks
-
-//     if (inputFile.is_open()) {
-//         std::vector<char> buffer(chunkSize);
-
-//         while (inputFile.read(buffer.data(), chunkSize) || inputFile.gcount() > 0) {
-//             cout << "file read";
-
-//             std::streamsize bytesRead = inputFile.gcount();
-//             // Process the 'bytesRead' number of bytes in the 'buffer'
-//             std::cout << "Read " << bytesRead << " bytes." << std::endl;
-//             // ... your processing logic for each chunk ...
-//             cout << string(buffer, 4) << endl;
-//         }
-//         inputFile.close();
-//     } else {
-//         std::cerr << "Unable to open file." << std::endl;
-//     }
-
-//     return 0;
-// }
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -36,19 +6,6 @@
 #include <cmath>
 
 using namespace std;
-
-// Function to read a 4-byte integer in big-endian order
-size_t readBigEndianUint32(std::ifstream& file) {
-    size_t value = 0;
-    file.read(reinterpret_cast<char*>(&value), 4);
-    // Convert from big-endian to the system's native endianness if necessary
-    // This is a simplified example and might need adjustment based on your system's endianness
-    size_t result = ((value & 0xFF000000) >> 24) |
-                      ((value & 0x00FF0000) >> 8)  |
-                      ((value & 0x0000FF00) << 8)  |
-                      ((value & 0x000000FF) << 24);
-    return result;
-}
 
 struct TurnipTimeSignature {
     int length = -1;
@@ -110,10 +67,6 @@ int main() {
             char trackId[4];
             while (midiFile.read(trackId, 4)) {
                 if (std::string(trackId, 4) == "MTrk") {
-                    // size_t trackLength = readBigEndianUint32(midiFile);
-                    // std::cout << "Found MTrk chunk with length: " << trackLength << " bytes." << std::endl;
-
-
                     cout << midiFile.tellg() << endl;
                     // Read the track event 
 
@@ -388,28 +341,3 @@ int main() {
 
     return 0;
 }
-
-// #include <iostream>
-// #include <fstream>
-// #include <string>
-
-// int main() {
-//     ofstream image;
-//     image.open("image.ppm");
-
-//     if (image.is_open()) {
-//         image << "P3" << endl;
-//         image << "250 250" << endl;
-//         image << "255" << endl;
-
-//         for (int y = 0; y <250; y++) {
-//             for (int x = 0; x < 250; x++) {
-//                 image << x << " " << y << " " << x << endl;
-//             }
-//         }
-//     }
-
-//     image.close();
-
-//     return 0;
-// }
